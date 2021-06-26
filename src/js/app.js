@@ -7,13 +7,11 @@ const humans = {
   capitalCity: 'Штормград',
   enemies: 'Орки',
 };
-const swordsman = {
-  __proto__: humans,
-  name: 'мечник',
-  health: 10,
-  level: 2,
-  attack: 80,
-  defence: 40,
-};
+const swordsman = Object.create(humans);
+swordsman.name = 'мечник';
+swordsman.health = 10;
+swordsman.level = 2;
+swordsman.attack = 80;
+swordsman.defence = 40;
 
 console.log(orderByProps(swordsman, ['name', 'level']));

@@ -1,6 +1,30 @@
 export default function orderByProps(player, list) {
-  const orderedProps = [];
-  const unoderedProps = [];
+  const propsByList = [];
+  const propsByAlphabet = [];
+  const comparator = (a, b) => a.key.localeCompare(b.key);
+
+  if (typeof list === 'object' && list.length !== 0) {
+    for (const prop in player) {
+      if (Object.prototype.hasOwnProperty.call(player, prop)) {
+        const obj = {
+          key: prop,
+          value: player[prop],
+        };
+
+        const propIndex = list.indexOf(prop);
+
+        if (propIndex !== -1) {
+          propsByList[propIndex] = obj;
+        } else {
+          propsByAlphabet.push(obj);
+        }
+      }
+    }
+
+    propsByAlphabet.sort(comparator);
+
+    return propsByList.concat(propsByAlphabet);
+  }
 
   for (const prop in player) {
     if (Object.prototype.hasOwnProperty.call(player, prop)) {
@@ -9,19 +33,11 @@ export default function orderByProps(player, list) {
         value: player[prop],
       };
 
-      const propIndex = list.indexOf(prop);
-
-      if (propIndex !== -1) {
-        orderedProps[propIndex] = obj;
-      } else {
-        unoderedProps.push(obj);
-      }
+      propsByAlphabet.push(obj);
     }
   }
 
-  const comparator = (a, b) => a.key.localeCompare(b.key);
+  propsByAlphabet.sort(comparator);
 
-  unoderedProps.sort(comparator);
-
-  return [...orderedProps, ...unoderedProps];
+  return propsByAlphabet;
 }
